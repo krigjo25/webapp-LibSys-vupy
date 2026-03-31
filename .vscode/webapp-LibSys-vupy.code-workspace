@@ -9,6 +9,9 @@
         
         "conventionalCommits.scopes": [
             "Workspace",
+            "UI",
+            "Resources",
+            "Deps"
         ],
     },
 }
