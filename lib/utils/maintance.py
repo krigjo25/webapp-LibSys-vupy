@@ -4,8 +4,8 @@
 import os, uuid as ID
 
 from core_files import app, db
-from lib.modal.db_init import Book
-from lib.config.log_config import UtilityWatcher
+from backend.lib.modal.db_init import Book
+from backend.lib.config.log_config import UtilityWatcher
 
 
 log = UtilityWatcher()

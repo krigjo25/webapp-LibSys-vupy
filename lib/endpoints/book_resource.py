@@ -11,9 +11,9 @@ from flask import jsonify, request
 from sqlalchemy.exc import IntegrityError
 from typing import List, Optional
 #   Importing custom libraries
-from lib.modal.db_init import Book
-from lib.config.log_config import MethodWatcher
-from lib.utils.maintance import UtilityTools
+from backend.lib.modal.db_init import Book
+from backend.lib.config.log_config import MethodWatcher
+from backend.lib.utils.maintance import UtilityTools
 
 #   Loading environment variables
 load_dotenv()
