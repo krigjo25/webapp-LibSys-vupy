@@ -1,11 +1,11 @@
 #   Utility tools for the application
 
 #   Import the necessary dependencies
-import os, uuid as ID
+import uuid as ID
 
 from core_files import app, db
-from backend.lib.modal.db_init import Book
-from backend.lib.config.log_config import UtilityWatcher
+from lib.modal.db_init import Book
+from lib.config.log_config import UtilityWatcher
 
 
 log = UtilityWatcher()
