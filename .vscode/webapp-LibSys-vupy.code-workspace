@@ -1,0 +1,14 @@
+{
+    "folders": [{"path":"../"}],
+    "recommendations": [ "Vue.volar",  "Vue.vscode-typescript-vue-plugin",  "ms-python.python",  "mikestead.dotenv", "glenn2223.live-sass", "ms-vscode.powershell" ],
+    "settings": {
+        "python.defaultInterpreterPath": "./backend/.venv/bin/python",
+        "python.testing.pytestArgs": [ "pytest"],
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        
+        "conventionalCommits.scopes": [
+            "Workspace",
+        ],
+    },
+}
