@@ -5,7 +5,6 @@ Flask for the backend framework, and Vue.js with Sass for the frontend user inte
 A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-libSys.pdf)
 
 **Images:**
-
 * Images used in this project have been sourced from Google.com search results.
 * We make no claim to ownership of these images. Copyright remains with the original creators.
 * Images are used for educational purposes only.
@@ -16,7 +15,6 @@ A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-l
 * We do not guarantee the accuracy, suitability, or legality of any image found via Google.com.
 
 **General:**
-
 * This project is provided "as is" without warranty of any kind, express or implied.
 * The project creators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your access to or use of this project.
 * Links to external resources are provided for convenience and informational purposes only. We do not endorse or take responsibility for the content or privacy practices of these resources.
@@ -42,63 +40,21 @@ A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-l
 | Testing         | pytest                                  | 9.0.2    |
 
 ---
-
-## Architecture
-
-The system is split into two independently running processes:
-
-```
-webapp-LibSys-vupy/
-├── backend/        # Flask REST API and backend documentation
-├── docs/           # Repository-level architecture documents and diagrams
-└── frontend/       # Vue 3 SPA, assets, and frontend documentation
-```
-
-For a full breakdown see [docs/architecture.md](docs/architecture.md), [backend/docs/architecture.md](backend/docs/architecture.md), and [frontend/docs/architecture.md](frontend/docs/architecture.md).
-
 ## Repository Structure
 
 ```text
 webapp-LibSys-vupy/
 ├── README.md
 ├── backend/
-│   ├── app.py
-│   ├── core_files/
-│   ├── docs/
-│   │   ├── README.md
-│   │   ├── architecture.md
-│   │   └── diagrams/
-│   ├── lib/
-│   │   ├── config/
-│   │   ├── endpoints/
-│   │   ├── modal/
-│   │   ├── SQL Data/
-│   │   └── utils/
-│   ├── requirements.in
-│   └── requirements.txt
 ├── docs/
 │   ├── architecture.md
 │   └── diagrams/
 └── frontend/
-	├── docs/
-	│   ├── architecture.md
-	│   ├── diagrams/
-	│   └── Webapp-libSys.pdf
-	├── public/
-	├── src/
-	│   ├── assets/
-	│   ├── components/
-	│   ├── router/
-	│   └── stores/
-	├── index.html
-	├── package.json
-	└── vite.config.js
 ```
 
 ---
 
 ## Important Documents
-
 | Document | Description |
 |----------|-------------|
 | [docs/architecture.md](docs/architecture.md) | Repository-level architecture covering frontend, backend, and persistence |
@@ -153,7 +109,6 @@ flask run --debug
 ```
 
 ## Credits
-
 This project was initialized using the [testdriven](https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/)'s tutorial.
 
 ##  Contact Details
