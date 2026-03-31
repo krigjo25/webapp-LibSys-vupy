@@ -1,7 +1,8 @@
 # Frontend Architecture
 Vue 3 single-page application bundled by Vite.
 
----
+## System View
+Use [frontend/docs/diagrams/frontend-runtime-architecture.md](frontend/docs/diagrams/frontend-runtime-architecture.md) if you want the standalone diagram file.
 
 ## Directory Structure
 ```
