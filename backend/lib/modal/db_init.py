@@ -6,6 +6,7 @@ from core_files import db
 import datetime as dt
 from uuid import uuid4
 from sqlalchemy import Column, Integer, String, REAL
+from typing import Dict, Any
 
 class Book(db.Model):
     """
@@ -27,23 +28,23 @@ class Book(db.Model):
     title = Column(String(100), nullable=False, unique=True)
     year = Column(Integer, nullable=True, default=dt.datetime.now(dt.UTC))
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Book title : {self.title} Book id : {self.bookID} row : {self.id}>"
     
-    def ConvertToDict(self):
+    def ConvertToDict(self) -> Dict[str, Any]:
 
-        seperator = ","
+        separator = ","
 
-        year = str(self.year).split('-')
+        year_str = str(self.year).split('-')
 
         return {
             'id': self.bookID,
             'title': self.title,
             'author': self.author,
-            'year': year[0],
-            'genre': str(self.genre).split(seperator),
+            'year': year_str[0],
+            'genre': str(self.genre).split(separator),
             'description': self.description,
             'path': self.img_path,
-            'reviews': {'name':self.reviewers,
+            'reviews': {'name': self.reviewers,
                         'rating': self.rating}
         }

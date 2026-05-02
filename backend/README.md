@@ -40,7 +40,7 @@ backend/
 
 ### HTTP API
 
-- `lib/endpoints/book_resource.py` contains the main `BookMananger` `MethodView`.
+- `lib/endpoints/book_resource.py` contains the main `BookManager` `MethodView`.
 - The root route `/` supports `GET` and `POST`.
 - The parameterized route `/<BID>` supports `PUT` and `DELETE`.
 

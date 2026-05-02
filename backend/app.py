@@ -4,7 +4,7 @@
 from core_files import app, db, logger
 
 #   Import application repositories
-from lib.endpoints.book_resource import BookMananger
+from lib.endpoints.book_resource import BookManager
 from lib.modal.test_data import alchemist, secrets
 
 #   Initialize the database and add the preloaded data
@@ -14,9 +14,9 @@ with app.app_context():
     db.session.commit()
 
 #   Endpoints
-Mananger = BookMananger()
-app.add_url_rule('/', view_func=Mananger.as_view('get', methods=['GET', 'POST']))
-app.add_url_rule('/<BID>', view_func=Mananger.as_view('update', methods=['PUT', 'DELETE']))    
+manager = BookManager()
+app.add_url_rule('/', view_func=manager.as_view('get', methods=['GET', 'POST']))
+app.add_url_rule('/<BID>', view_func=manager.as_view('update', methods=['PUT', 'DELETE']))    
 
 #   Log the application configurations
 logger.warn('Application Configurations START')

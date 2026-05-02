@@ -5,7 +5,7 @@ Use Markdown preview for this document. If you want to open only the diagram in 
 
 ## Runtime Flow
 1. The application starts in `app.py`, imports the shared Flask app, SQLAlchemy instance, and logger from `core_files`, then creates database tables inside an application context.
-2. `BookMananger` from `lib/endpoints/book_resource.py` is registered as the main HTTP resource for `/` and `/<BID>`.
+2. `BookManager` from `lib/endpoints/book_resource.py` is registered as the main HTTP resource for `/` and `/<BID>`.
 3. Request handling is centered on a single `MethodView` that supports `GET`, `POST`, `PUT`, and `DELETE` for book records.
 4. Persistent data is stored through the `Book` SQLAlchemy model in `lib/modal/db_init.py`, using the configured SQLite database during development.
 5. Sessions are backed by Flask-Session using filesystem storage, while CORS and environment-driven settings are loaded during app boot.
@@ -19,7 +19,7 @@ Use Markdown preview for this document. If you want to open only the diagram in 
 - `lib/config/log_config.py` defines logger wrappers used across the backend.
 
 ### API Layer
-- `lib/endpoints/book_resource.py` contains `BookMananger`, the primary API resource.
+- `lib/endpoints/book_resource.py` contains `BookManager`, the primary API resource.
 - The resource handles list, create, update, and delete operations for books.
 - Response formatting and request logging are implemented directly inside the view class.
 
