@@ -1,5 +1,6 @@
+# pyright: reportCallIssue=false
 from .db_init import Book
-from uuid import uuid4
+
 alchemist = Book(
     rating = 4.5,
     title = "The Alchemist",

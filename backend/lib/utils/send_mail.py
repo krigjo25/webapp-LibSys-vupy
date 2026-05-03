@@ -2,7 +2,7 @@
 from os import getenv
 
 #   Internal Libraries
-from lib.custom_functions import SendMail
+from .custom_functions import SendMail
 
 RECIEVER: str = getenv('RECIEVER', '')
 SMPTMASTER: str = getenv('SMPTMASTER', '') 

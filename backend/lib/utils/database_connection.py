@@ -1,9 +1,10 @@
 #   Python Libraries
 import sys
-from typing import List
+from os import getenv
+from typing import List, Any
 
 #   Third-party Libraries
-import mariadb
+import mariadb # type: ignore (Library lacks type stubs)
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -21,87 +22,77 @@ class MariaDB:
 
     def __init__(self) -> None:
         try:
-            self.conn: mariadb.Connection = mariadb.connect(
+            self.conn = mariadb.connect( # type: ignore
                 host=getenv('H0ST'),
                 user=getenv('MASTER'),
-                port=int(getenv('PORT')),
+                port=int(getenv('PORT') or 3306),
                 password=getenv('PASSWORD'),
                 database=getenv('database')
             )
-            self.cur: mariadb.Cursor = self.conn.cursor()
-        except mariadb.Error as e:
+            self.cur = self.conn.cursor() # type: ignore
+        except mariadb.Error as e: # type: ignore
             print(f"Error connecting to the database: \n {e}")
             sys.exit(1)
 
     def close_connection(self) -> None:
-        self.conn.close()
+        self.conn.close() # type: ignore
 
-    def select_from_table(self, database: str, query: str) -> List[List[str]]:
-        self.conn.database = database
-        self.cur.execute(query)
-        sql = self.cur.fetchall()
-        sql_data: List[List[str]] = [list(i) for i in sql]
+    def select_from_table(self, database: str, query: str) -> List[List[Any]]:
+        self.conn.database = database # type: ignore
+        self.cur.execute(query) # type: ignore
+        sql = self.cur.fetchall() # type: ignore
+        sql_data: List[List[Any]] = [list(i) for i in sql] # type: ignore
         return sql_data
 
     def row_count(self, database: str, query: str) -> int:
-        self.conn.database = database
-        self.cur.execute(query)
+        self.conn.database = database # type: ignore
+        self.cur.execute(query) # type: ignore
 
-        self.cur.fetchall()
+        self.cur.fetchall() # type: ignore
 
-        return self.cur.rowcount()
+        return self.cur.rowcount() # type: ignore
 
-    def update_table (self, database, query):
+    def update_table (self, database: str, query: str) -> None:
 
         #   Database selection
-        self.conn.database = database
-
-        self.database = database
+        self.conn.database = database # type: ignore
 
         #   Executes the query and close the connection
 
-        self.cur.execute(query)
-        self.conn.close()
+        self.cur.execute(query) # type: ignore
+        self.conn.close() # type: ignore
 
         return
 
-    def call_procedure (self, database, query):
+    def call_procedure (self, database: str, query: str) -> None:
 
         #   Database Connection 
-        self.conn.database = database
+        self.conn.database = database # type: ignore
 
         #   calling a procedure
-        self.cur.callproc(f'{query}')
+        self.cur.callproc(f'{query}') # type: ignore
 
         return
 
     def create_database(self, name:str) -> None:
 
         query:str = f'CREATE DATABASE IF NOT EXISTS {name}'
-        self.cur.execute(query)
-        self.conn.database = name
-
-        msg:str = ''
-        if self.conn == True: msg = f'{name}, were successfully created'
-        else: msg = ' An error occurred'
+        self.cur.execute(query) # type: ignore
+        self.conn.database = name # type: ignore
 
         return
 
     def drop_database(self, name:str) -> None:
 
         query:str = f'DROP DATABASE IF NOT EXISTS {name}'
-        self.cur.execute(query)
-
-        msg:str = ''
-        if self.conn == False: msg = f'{name}, were successfully deleted'
-        else: msg = ' An error occurred'
+        self.cur.execute(query) # type: ignore
 
         return
 
     def drop_table(self, database:str, name:str) -> None:
 
-        self.conn.database = database
+        self.conn.database = database # type: ignore
 
         query:str = f'DROP TABLE IF EXISTS {name};'
-        self.cur.execute(query)
+        self.cur.execute(query) # type: ignore
         return

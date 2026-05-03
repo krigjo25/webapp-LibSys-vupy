@@ -1,6 +1,7 @@
+# pyright: reportUnknownMemberType=false, reportUnknownVariableType=false
 #   Database tables for the app
 
-from core_files import db
+from core_files import db # type: ignore (Circular or complex import)
 #   Importing the required modules
 
 import datetime as dt
@@ -8,7 +9,7 @@ from uuid import uuid4
 from sqlalchemy import Column, Integer, String, REAL
 from typing import Dict, Any
 
-class Book(db.Model):
+class Book(db.Model): # type: ignore
     """
         *   Books model class
         *   Initialize the class model
@@ -24,7 +25,7 @@ class Book(db.Model):
     reviewers = Column(String(100), nullable=True)
     published_by = Column(String(100), nullable=False)
     description = Column(String(100), nullable=False)
-    rating = Column(REAL, nullable=True, default=0.0)
+    rating = Column(REAL, nullable=True, default=0.0) 
     title = Column(String(100), nullable=False, unique=True)
     year = Column(Integer, nullable=True, default=dt.datetime.now(dt.UTC))
     

@@ -1,10 +1,10 @@
 #   Python Libraries
 import datetime
 from os import getenv
-from typing import Dict, List, List, Any
+from typing import List, Any
 
 #   Third-party Libraries
-import yagmail
+import yagmail # type: ignore (Library lacks type stubs)
 from dotenv import load_dotenv
 
 #   Internal Libraries
@@ -66,7 +66,7 @@ class SendMail:
                 If the book is not delivered by {row[7]} a fine may apply\n This is an automatic generated email, please do not respond.'''   
 
                 #  Sending an e-mail 
-                yagmail.SMTP(SMPTMASTER, SMTPPASSWORD).send(to=RECIEVER, subject="Book Return Reminder", contents=msg)
+                yagmail.SMTP(SMPTMASTER, SMTPPASSWORD).send(to=RECIEVER, subject="Book Return Reminder", contents=msg) # type: ignore (Library lacks type stubs)
 
             elif over_due_date_days == 0:
                 msg = f'''   greetings {row[3]}.
@@ -75,7 +75,7 @@ class SendMail:
                 If the store is closed, please deliver the given book in a propper box outside the store. '''
                 
                 #  Sending an e-mail
-                yagmail.SMTP(SMPTMASTER, SMTPPASSWORD).send(to=RECIEVER, subject="Overdue Book", contents=msg)
+                yagmail.SMTP(SMPTMASTER, SMTPPASSWORD).send(to=RECIEVER, subject="Overdue Book", contents=msg) # type: ignore (Library lacks type stubs)
 
         return
 

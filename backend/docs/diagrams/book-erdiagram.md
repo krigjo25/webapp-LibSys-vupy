@@ -13,12 +13,12 @@ erDiagram
     BOOKS {
         INT id PK "AUTO Increment"
         VARCHAR title "NOT NULL"
-        INT author FK"NOT NULL"
+        INT author FK "NOT NULL"
         DECIMAL price "(6,2) NOT NULL"
         INT qty "NOT NULL"
         VARCHAR genere "NOT NULL"
         VARCHAR subgenre "NOT NULL"
-        DECIMAL rating "(2,1) NOT NULL"
+        DECIMAL rating "(2,1) NOT NULL DEFAULT 0.0"
     }
 
     LENDED {
