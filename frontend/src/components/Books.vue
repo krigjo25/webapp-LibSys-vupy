@@ -1,6 +1,6 @@
 <template>
         <section v-for="book in data.books" :key="book.bookID">
-            <div @click="bookInfo(book.bookID)">
+            <div @click="book.bookID && bookInfo(book.bookID)">
                 <img :src="book.path" alt="book cover.jpg" />
                 <div>
                     <h3>{{ book.title }}

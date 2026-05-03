@@ -52,7 +52,7 @@ const formData = reactive<FormState>({
 
 const inputs = reactive<FormConfig>({
     title: 'Insert A book',
-    bookid: bufferData ? bufferData.bookID : null,
+    bookid: bufferData?.bookID ?? null,
     data: [
       {
         value: null,
