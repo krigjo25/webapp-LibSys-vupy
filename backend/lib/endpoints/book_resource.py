@@ -11,17 +11,17 @@ from dotenv import load_dotenv
 from flask.views import MethodView
 from flask import jsonify, request, Response
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
 from pydantic import ValidationError
 
 load_dotenv()
 
 #   Importing Internal Libraries
 from core_files import db # type: ignore (Circular or complex import)
-from lib.modal.db_init import Book
+from lib.modal.db_init import Book, Author
 from lib.modal.schemas import BookCreate, BookUpdate, BookSchema
 from lib.config.log_config import MethodWatcher
 from lib.utils.maintenance import UtilityTools
-
 
 logger = MethodWatcher()
 logger.file_handler() # type: ignore (Library lacks type stubs in base class Log)
@@ -29,178 +29,143 @@ logger.file_handler() # type: ignore (Library lacks type stubs in base class Log
 class BookManager(MethodView):
 
     def __init__(self, *args: Any, **kwargs: Any):
-
-        #   Initialize the logger
         self.origins = '*'
-
         self.logger = logger
         self.tool = UtilityTools()
 
+    def _get_or_create_author(self, author_name: str) -> Author:
+        """Finds an author by name or creates a new one."""
+        first_name, last_name = author_name.split(" ", 1) if " " in author_name else (author_name, "")
+        
+        author = Author.query.filter_by(first_name=first_name, last_name=last_name).first()
+        if not author:
+            author = Author(first_name=first_name, last_name=last_name)
+            db.session.add(author)
+            db.session.commit()
+        return author
+
     def get(self) -> Response:
-        books = Book.query.all()
+        books = Book.query.options(joinedload(Book.author_rel)).all()
         books_dict = [BookSchema.from_orm_model(book).model_dump(by_alias=True) for book in books]
         return self.response(books=books_dict)
 
     def post(self) -> Response:
-
-        #  Fetch the requested data
         json_data = request.get_json()
-
-        #   Log the data which is retrieved
-        self.logger.warn(f"Data retrieved") # type: ignore (Library lacks type stubs in base class Log)
-
-        if json_data and isinstance(json_data, dict):
-            for key, value in json_data.items():
-                self.logger.info(f"{key} : {value}") # type: ignore (Library lacks type stubs in base class Log)
-        self.logger.warn(f"END OF LIST") # type: ignore (Library lacks type stubs in base class Log)
-
-        #   Ensure that the data is not None
-        if json_data is None: 
-            self.logger.error(f"{request.headers} | {request.method}") # type: ignore (Library lacks type stubs in base class Log)
+        if not json_data: 
             return self.response(400, message="No data provided")
 
         try:
-            # Validate data using Pydantic
-            if not isinstance(json_data, dict):
-                return self.response(400, message="Invalid data format")
-                
             book_data = BookCreate(**json_data)
-
-            # Initialize a new book object
+            
+            author = self._get_or_create_author(book_data.author)
+            
             book = Book(
                 title=book_data.title,
-                author=book_data.author,
+                author_id=author.id,
                 genre=", ".join(book_data.genre),
                 description=book_data.description,
                 published_by=book_data.published_by,
                 year=book_data.year,
                 img_path=book_data.img_path,
-                rating=book_data.rating,
-                reviewers=book_data.reviewers
+                rating=book_data.rating
             )
-
-            #   Commit the changes to the database
-            db.session.add(book) # type: ignore (Library lacks type stubs)
-            db.session.commit() # type: ignore (Library lacks type stubs)
+            db.session.add(book)
+            db.session.commit()
 
         except ValidationError as e:
-            self.logger.error(f"Validation Error: {e.json()}") # type: ignore (Library lacks type stubs in base class Log)
             return self.response(422, message=str(e.errors()))
         except IntegrityError as e:
-            self.logger.error(f"Error : {e}") # type: ignore (Library lacks type stubs in base class Log)
-            return self.response(405, message="Already exists within the database")
+            return self.response(409, message="A book with this title already exists.")
 
-        return self.response(201)
+        return self.response(201, BID=str(book.id))
 
     def put(self, BID: str) -> Response:
+        try:
+            book_id_int = int(BID)
+        except ValueError:
+            return self.response(400, message="Invalid Book ID format.")
 
-        #   fetch the current book
-        book = Book.query.get(BID) # type: ignore (Library lacks type stubs)
+        book = Book.query.get(book_id_int)
         if not book:
             return self.response(404, BID=BID)
 
-        #   Initialize the response and fetch the request data
         json_data = request.get_json()
         if not json_data:
-            return self.response(405, message="No data provided")
+            return self.response(400, message="No data provided")
 
         try:
-            # Validate data using Pydantic
-            if not isinstance(json_data, dict):
-                return self.response(400, message="Invalid data format")
-
             update_data = BookUpdate(**json_data)
             update_dict = update_data.model_dump(exclude_unset=True)
 
-            #   Update the book object
+            if 'author' in update_dict:
+                author = self._get_or_create_author(update_dict['author'])
+                book.author_id = author.id
+                del update_dict['author'] # No direct 'author' field on Book model
+
             for key, value in update_dict.items():
                 if key == "genre" and value is not None:
                     setattr(book, key, ", ".join(value))
-                elif hasattr(book, key) and key != 'id':
+                elif hasattr(book, key):
                     setattr(book, key, value)
 
-            db.session.commit() # type: ignore (Library lacks type stubs)
+            db.session.commit()
 
         except ValidationError as e:
-            self.logger.error(f"Validation Error: {e.json()}") # type: ignore (Library lacks type stubs in base class Log)
             return self.response(422, message=str(e.errors()))
 
-        #   Success response
-        self.logger.info(f"Data retrieved: {json_data} ") # type: ignore (Library lacks type stubs in base class Log)
-        books = Book.query.all()
+        books = Book.query.options(joinedload(Book.author_rel)).all()
         books_dict = [BookSchema.from_orm_model(book).model_dump(by_alias=True) for book in books]
         return self.response(200, books=books_dict)
 
     def delete(self, BID: Optional[str]) -> Response:
+        if BID is None:
+            return self.response(405)
+        
+        try:
+            book_id_int = int(BID)
+            # Purge logic needs to be updated for integer IDs if it's still used
+            # For now, just delete the book directly
+            book = Book.query.get(book_id_int)
+            if book:
+                db.session.delete(book)
+                db.session.commit()
+                return self.response(200, BID=BID)
+            else:
+                return self.response(404, BID=BID)
+        except (ValueError, IntegrityError) as e:
+            return self.response(500, message=f"Error deleting book: {e}")
 
-        if BID is not None:
-            self.tool.Purge(BID)
-            return self.response(200, BID=BID)
-
-        return self.response(405)
 
     def response(self, status: int = 200, message: Optional[str] = None, BID: Optional[str] = None, books: Optional[List[Any]] = None) -> Response:
-
         response: dict[str, Any] = {}
+        if books is not None:
+            response['books'] = books
+        response['status'] = status
+        
+        # Default messages based on status
+        if message is None:
+            if status == 200:
+                message = "The operation was successful."
+            elif status == 201:
+                message = "Successfully added a new entry to the database."
+            elif status == 400:
+                message = "Bad Request. The server could not understand the request due to invalid syntax."
+            elif status == 404:
+                message = "The requested resource could not be found."
+            elif status == 405:
+                message = "Method Not Allowed."
+            elif status == 409:
+                message = "Conflict with existing resource."
+            elif status == 422:
+                message = "Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors."
+            elif status == 500:
+                message = "Internal Server Error."
+            else:
+                message = "An unknown status occurred."
 
-        match (status):
+        response['message'] = message
+        
+        if BID is not None:
+            response['BID'] = BID
 
-            #   Request successful
-            case 200:
-                response['books'] = books
-                response['status'] = status
-
-                if not message:
-                    response['message'] = "The operation was successful !"
-
-                if not books and status == 200 and request.method == 'GET':
-                    response['message'] = "Books was not found !"
-
-                self.logger.warn(f"Headers : {request.headers}\n  Method : {request.method} | response : {response}") # type: ignore (Library lacks type stubs in base class Log)
-
-            case 201:
-
-                response['status'] = status
-                if not message:
-                    response['message'] = "Successfully added a new entry to the database."
-
-                self.logger.warn(f"\tMethod : {request.method} | Book ID : {BID}") # type: ignore (Library lacks type stubs in base class Log)
-
-            case 400:
-                response['status'] = status
-                response['message'] = message or "Bad Request"
-                self.logger.error(f"400 Bad Request: {message}") # type: ignore (Library lacks type stubs in base class Log)
-
-            case 422:
-                response['status'] = status
-                response['message'] = message or "Unprocessable Entity"
-                self.logger.error(f"422 Validation Error: {message}") # type: ignore (Library lacks type stubs in base class Log)
-
-            #   Not Found
-            case 404:
-                response['status'] = status
-                if not message:
-                    response['message'] = "Checked everywhere, the book was not found."
-
-                self.logger.error(f"\tMethod : {request.method} | Book ID : {BID}") # type: ignore (Library lacks type stubs in base class Log)
-
-            #   Method not allowed
-            case 405:
-                response['status'] = status
-                if not message:
-
-                    response['message'] = "Something smells fishy, ensure the request method is correct."
-
-                self.logger.warn(f"Headers : {request.headers}\n  Method : {request.method} | Book ID : {BID}") # type: ignore (Library lacks type stubs in base class Log)
-            case 500:
-                response['status'] = status
-
-                if not message:
-                    response['message'] = "An error occurred while attempting to process the request"
-                self.logger.warn(f"Headers : {request.headers}\n  Method : {request.method} | Book ID : {BID}") # type: ignore (Library lacks type stubs in base class Log)
-            
-            case _:
-                response['status'] = status
-                response['message'] = message or "Unknown Status"
-
-        return jsonify(response)
+        return jsonify(response), status

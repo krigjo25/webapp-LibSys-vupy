@@ -1,15 +1,24 @@
 from typing import Any
 from flask import Response
 from core_files import app, db
-from lib.modal.db_init import Book
+from lib.modal.db_init import Book, Author
 from lib.endpoints.book_resource import BookManager
-from lib.modal.test_data import alchemist, secrets
+from lib.modal.test_data import alchemist, secrets, paulo, rhonda
 
 def initialize_database():
     """Initializes the database and seeds it with test data if empty."""
     with app.app_context():
         db.create_all()
         if Book.query.count() == 0:
+            # Seed Authors first
+            db.session.add(paulo)
+            db.session.add(rhonda)
+            db.session.commit() # Get IDs
+
+            # Link books to authors
+            alchemist.author_id = paulo.id
+            secrets.author_id = rhonda.id
+
             db.session.add(alchemist)
             db.session.add(secrets)
             db.session.commit()

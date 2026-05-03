@@ -2,50 +2,96 @@
 #   Database tables for the app
 
 from core_files import db # type: ignore (Circular or complex import)
-#   Importing the required modules
-
 import datetime as dt
-from uuid import uuid4
-from sqlalchemy import Column, Integer, String, REAL
+from sqlalchemy import Column, Integer, String, REAL, ForeignKey, Date, Numeric, BigInteger
+from sqlalchemy.orm import relationship
 from typing import Dict, Any
 
-class Book(db.Model): # type: ignore
-    """
-        *   Books model class
-        *   Initialize the class model
-    """
+class Author(db.Model): # type: ignore
+    __tablename__ = "Authors"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
+    bio = Column(String(500), nullable=True)
 
-    __tablename__ = "Books"
-    id = Column(Integer, unique=True, autoincrement=True)
-    bookID = Column(String, primary_key=True, nullable=False, default= lambda: uuid4().hex)
+    books = relationship("Book", back_populates="author_rel")
 
-    genre = Column(String(100), nullable=False)
-    author = Column(String(100), nullable=False)
-    img_path = Column(String(100), nullable=True)
-    reviewers = Column(String(100), nullable=True)
-    published_by = Column(String(100), nullable=False)
-    description = Column(String(100), nullable=False)
-    rating = Column(REAL, nullable=True, default=0.0) 
-    title = Column(String(100), nullable=False, unique=True)
-    year = Column(Integer, nullable=True, default=dt.datetime.now(dt.UTC))
-    
     def __repr__(self) -> str:
-        return f"<Book title : {self.title} Book id : {self.bookID} row : {self.id}>"
+        return f"<Author {self.first_name} {self.last_name}>"
+
+class Book(db.Model): # type: ignore
+    __tablename__ = "Books"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False, unique=True)
+    author_id = Column(Integer, ForeignKey('Authors.id'), nullable=False)
+    price = Column(Numeric(6, 2), nullable=False, default=0.0)
+    qty = Column(Integer, nullable=False, default=1)
+    genre = Column(String(255), nullable=False)
+    subgenre = Column(String(255), nullable=True)
+    rating = Column(REAL, nullable=True, default=0.0)
     
-    def ConvertToDict(self) -> Dict[str, Any]:
+    # Fields kept for frontend compatibility (as requested)
+    description = Column(String(1000), nullable=True)
+    img_path = Column(String(255), nullable=True)
+    year = Column(Integer, nullable=True)
+    published_by = Column(String(255), nullable=True)
 
-        separator = ","
+    author_rel = relationship("Author", back_populates="books")
+    lendings = relationship("Lended", back_populates="book_rel")
 
-        year_str = str(self.year).split('-')
+    def __repr__(self) -> str:
+        return f"<Book {self.title} (ID: {self.id})>"
 
-        return {
-            'id': self.bookID,
-            'title': self.title,
-            'author': self.author,
-            'year': year_str[0],
-            'genre': str(self.genre).split(separator),
-            'description': self.description,
-            'path': self.img_path,
-            'reviews': {'name': self.reviewers,
-                        'rating': self.rating}
-        }
+class Member(db.Model): # type: ignore
+    __tablename__ = "Members"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
+    phone = Column(String(20), unique=True, nullable=False)
+    membership_number = Column(BigInteger, unique=True, nullable=False)
+    membership_date = Column(Date, nullable=False, default=dt.date.today)
+
+    lendings = relationship("Lended", back_populates="member_rel")
+
+    def __repr__(self) -> str:
+        return f"<Member {self.first_name} {self.last_name}>"
+
+class Lended(db.Model): # type: ignore
+    __tablename__ = "Lended"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    book_id = Column(Integer, ForeignKey('Books.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey('Authors.id'), nullable=False)
+    member_id = Column(Integer, ForeignKey('Members.id'), nullable=False)
+    borrow_date = Column(Date, nullable=False, default=dt.date.today)
+    return_date = Column(Date, nullable=False)
+    isLate = Column(Integer, nullable=False, default=0)
+    isMissing = Column(Integer, nullable=False, default=0)
+
+    book_rel = relationship("Book", back_populates="lendings")
+    member_rel = relationship("Member", back_populates="lendings")
+
+class TerminatedBook(db.Model): # type: ignore
+    __tablename__ = "TerminatedBooks"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
+    author_id = Column(Integer, ForeignKey('Authors.id'), nullable=False)
+    qty = Column(Integer, nullable=False)
+    isTerminated = Column(Integer, nullable=False, default=1)
+
+class ReturnedBook(db.Model): # type: ignore
+    __tablename__ = "ReturnedBooks"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
+    author_id = Column(Integer, ForeignKey('Authors.id'), nullable=False)
+    member_id = Column(Integer, ForeignKey('Members.id'), nullable=False)
+    return_date = Column(Date, nullable=False, default=dt.date.today)
+
+class MissingBook(db.Model): # type: ignore
+    __tablename__ = "MissingBooks"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
+    author_id = Column(Integer, ForeignKey('Authors.id'), nullable=False)
+    member_id = Column(Integer, ForeignKey('Members.id'), nullable=False)
+    report_date = Column(Date, nullable=False, default=dt.date.today)
+    fine_amount = Column(Numeric(6, 2), nullable=False, default=0.0)
