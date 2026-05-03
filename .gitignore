@@ -5,6 +5,7 @@
 
 #   Directories to ignore
 .venv/
+backend/.venv/
 instance/
 __pycache__/
 node_modules/
