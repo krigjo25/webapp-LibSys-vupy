@@ -1,7 +1,7 @@
 # pyright: reportUntypedBaseClass=false, reportUnknownMemberType=false
 
 #   Importing Third-party Libraries
-from std_log import Log # type: ignore (Library 'std_log' lacks type stubs)
+from std_log import Logger as Log # type: ignore (Library 'std_log' lacks type stubs)
 
 
 class AppWatcher(Log):

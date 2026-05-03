@@ -3,6 +3,7 @@ Flask-Session
 Flask-SQLAlchemy
 
 pytest
+pytest-cov
 Pydantic
 pydantic-settings
 python-dotenv

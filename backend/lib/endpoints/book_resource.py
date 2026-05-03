@@ -24,7 +24,7 @@ from lib.utils.maintenance import UtilityTools
 
 
 logger = MethodWatcher()
-logger.FileHandler() # type: ignore (Library lacks type stubs in base class Log)
+logger.file_handler() # type: ignore (Library lacks type stubs in base class Log)
 
 class BookManager(MethodView):
 
