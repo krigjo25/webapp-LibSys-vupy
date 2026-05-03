@@ -1,16 +1,13 @@
 #   Python Libraries
 import datetime
-from os import getenv
 from typing import List, Any
 
 #   Third-party Libraries
 import yagmail # type: ignore (Library lacks type stubs)
-from dotenv import load_dotenv
 
 #   Internal Libraries
 from .database_connection import MariaDB
-
-load_dotenv()
+from lib.config.env_config import settings
 
 class Calculators:
     '''         Calculators     
@@ -31,7 +28,7 @@ class SendMail:
 
     def configuration(self) -> List[List[Any]]:
         maria_db = MariaDB()
-        database: str = getenv('database7', '')
+        database: str = settings.DATABASE7
         dates: List[List[Any]] = []
         query = 'SELECT * FROM lib'
         data: List[List[Any]] = maria_db.select_from_table(database, query)

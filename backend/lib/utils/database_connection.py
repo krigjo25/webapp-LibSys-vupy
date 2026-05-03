@@ -1,12 +1,12 @@
 #   Python Libraries
 import sys
-from os import getenv
 from typing import List, Any
 
 #   Third-party Libraries
 import mariadb # type: ignore (Library lacks type stubs)
-from dotenv import load_dotenv
-load_dotenv()
+
+#   Internal Libraries
+from lib.config.env_config import settings
 
 #   Selecting, Inserting or updates a table
 class MariaDB:
@@ -23,11 +23,11 @@ class MariaDB:
     def __init__(self) -> None:
         try:
             self.conn = mariadb.connect( # type: ignore
-                host=getenv('H0ST'),
-                user=getenv('MASTER'),
-                port=int(getenv('PORT') or 3306),
-                password=getenv('PASSWORD'),
-                database=getenv('database')
+                host=settings.H0ST,
+                user=settings.MASTER,
+                port=settings.PORT,
+                password=settings.PASSWORD,
+                database=settings.DATABASE
             )
             self.cur = self.conn.cursor() # type: ignore
         except mariadb.Error as e: # type: ignore

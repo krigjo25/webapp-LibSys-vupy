@@ -1,23 +1,31 @@
-#   Configuration settings for the app
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-#   Importing the required modules
-import os
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', extra='ignore')
 
-class DefaultConfig(object):
-    # ...
-    # The default configuration for the app
-    # ...
-    DEBUG = False
-    TESTING = False
-    SESSION_TYPE = 'filesystem'
-    SESSION_PERMANENT = False
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///')
+    # Flask Settings
+    DEBUG: bool = False
+    TESTING: bool = False
+    SECRET_KEY: str = "default-secret-key"
     
+    # Session Settings
+    SESSION_TYPE: str = 'filesystem'
+    SESSION_PERMANENT: bool = False
+    
+    # Database Settings
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///test.db"
+    
+    # Custom Origins
+    CORS_ORIGINS: str = "*"
+    LOCAL_ORIGINS: str = "http://localhost:5173"
 
-class DevelopmentConfig(DefaultConfig):
-    # ...
-    # The development configuration for the app
-    # ...
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    # Database connection details (for MariaDB utility)
+    H0ST: str = "localhost"
+    MASTER: str = "root"
+    PORT: int = 3306
+    PASSWORD: str = ""
+    DATABASE: str = "library"
+    DATABASE7: str = ""
+
+settings = Settings()
