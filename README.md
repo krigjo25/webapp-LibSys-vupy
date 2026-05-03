@@ -1,55 +1,37 @@
 # Library Management System
-A web-based library management system has been developed employing SQLite as the database,<br>
-Flask for the backend framework, and Vue.js with Sass for the frontend user interface.<br>
+A web-based library management system developed using **Python (Flask)** for the backend and **Vue.js (TypeScript)** for the frontend.
 
 A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-libSys.pdf)
-
-**Images:**
-* Images used in this project have been sourced from Google.com search results.
-* We make no claim to ownership of these images. Copyright remains with the original creators.
-* Images are used for educational purposes only.
-* We have made reasonable efforts to identify and attribute image sources where possible. However, due to the nature of web search, accurate attribution may not always be feasible.
-* If you are a copyright holder and believe your work is being used without permission, or without proper attribution, please [See Contact Details Details below](#Contact Details) section with details and we will promptly address the issue.
-* Use of these images does not imply endorsement by the copyright holders.
-* Images may be subject to copyright restrictions. Users are responsible for ensuring their own compliance with copyright law.
-* We do not guarantee the accuracy, suitability, or legality of any image found via Google.com.
-
-**General:**
-* This project is provided "as is" without warranty of any kind, express or implied.
-* The project creators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your access to or use of this project.
-* Links to external resources are provided for convenience and informational purposes only. We do not endorse or take responsibility for the content or privacy practices of these resources.
-* Please review our Privacy Policy [Link to Privacy Policy] for information on how we handle personal data.
-* For any questions regarding these disclaimers, please vitit the [See Contact Details Details below](#Contact Details)
 
 ## Tech Stack
 
 | Layer           | Technology                              | Version  |
 |-----------------|-----------------------------------------|----------|
-| Frontend        | Vue 3                                   | ^3.5.13  |
+| **Frontend**    | Vue 3 (TypeScript)                      | ^3.5.13  |
 | Routing         | Vue Router                              | ^4.5.0   |
 | State           | Pinia                                   | ^3.0.1   |
 | HTTP Client     | Axios                                   | ^1.3.6   |
 | UI              | Bootstrap / Bootstrap Icons             | ^5.3.3   |
-| Styling         | SASS                                    | —        |
+| Styling         | SASS (Vite-integrated)                  | —        |
 | Build Tool      | Vite                                    | ^6.1.0   |
-| Backend         | Flask                                   | 3.1.3    |
+| **Backend**     | Flask                                   | 3.1.3    |
 | ORM             | Flask-SQLAlchemy                        | 3.1.1    |
 | Database        | SQLite                                  | —        |
-| Session         | Flask-Session                           | 0.8.0    |
 | Validation      | Pydantic                                | 2.12.5   |
-| Testing         | pytest                                  | 9.0.2    |
+| **Testing**     | pytest / Vitest                         | 9.0.2 / 4.1.5 |
+| Coverage        | pytest-cov / @vitest/coverage-v8        | 7.1.0 / 4.1.5 |
 
 ---
+
 ## Repository Structure
 
 ```text
 webapp-LibSys-vupy/
 ├── README.md
-├── backend/
-├── docs/
-│   ├── architecture.md
-│   └── diagrams/
-└── frontend/
+├── backend/            # Flask API & SQLAlchemy Models
+├── docs/               # System-level documentation & diagrams
+├── frontend/           # Vue 3 SPA (TypeScript)
+└── tests/              # Backend test suite
 ```
 
 ---
@@ -59,62 +41,86 @@ webapp-LibSys-vupy/
 |----------|-------------|
 | [docs/architecture.md](docs/architecture.md) | Repository-level architecture covering frontend, backend, and persistence |
 | [frontend/docs/architecture.md](frontend/docs/architecture.md) | Frontend runtime structure, folders, and data flow |
-| [frontend/README.md](frontend/README.md) | Frontend setup, scripts, configuration, and dependencies |
-| [backend/docs/README.md](backend/docs/README.md) | Backend documentation index and structure overview |
 | [backend/docs/architecture.md](backend/docs/architecture.md) | Backend runtime architecture and service breakdown |
-| [backend/docs/diagrams/backend-runtime-architecture.md](backend/docs/diagrams/backend-runtime-architecture.md) | Backend runtime diagram |
-| [frontend/docs/diagrams/frontend-runtime-architecture.md](frontend/docs/diagrams/frontend-runtime-architecture.md) | Frontend runtime diagram |
-| [docs/diagrams/system-architecture.md](docs/diagrams/system-architecture.md) | End-to-end system architecture diagram |
-| [backend/docs/diagrams/book-erdiagram.md](backend/docs/diagrams/book-erdiagram.md) | Entity-relationship diagram for the library domain |
+| [backend/docs/backend-diagrams.drawio](backend/docs/backend-diagrams.drawio) | Backend architecture and ER diagrams |
+| [frontend/docs/frontend-runtime-architecture.drawio](frontend/docs/frontend-runtime-architecture.drawio) | Frontend runtime diagram |
+| [docs/diagrams/system-overview.drawio](docs/diagrams/system-overview.drawio) | End-to-end system overview |
 | [backend/docs/diagrams/sequencediagram.md](backend/docs/diagrams/sequencediagram.md) | Sequence diagram for library interactions |
 | [backend/docs/diagrams/statediagram.md](backend/docs/diagrams/statediagram.md) | State diagram for core lending decisions |
 
 ---
 
 ## Installation
-1. Clone the repository:
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+
+### 1. Clone the repository
 ```sh
-#   Using HTTPS
 git clone https://github.com/krigjo25/webapp-LibSys-vupy.git
-
-#   Using SSH
-git clone git@github.com:krigjo25/webapp-LibSys-vupy.git
-
-#   Using Github CLI
-gh repo clone krigjo25/webapp-LibSys-vupy
-```
-
-2. Navigate to the project directory
-```sh
 cd webapp-LibSys-vupy
 ```
 
-3. Install backend dependencies
+### 2. Backend Setup
+We recommend using a virtual environment.
 ```sh
 cd backend
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Install frontend dependencies
+### 3. Frontend Setup
 ```sh
 cd ../frontend
 npm install
+```
+
+---
+
+## Running the Application
+
+### Start Backend
+```sh
+cd backend
+source .venv/bin/activate
+flask run --debug
+```
+
+### Start Frontend
+```sh
+cd frontend
 npm run dev
 ```
 
-5. Run the server
+---
+
+## Testing & Coverage
+
+### Backend
 ```sh
-cd ../backend
-flask run --debug
+cd backend
+source .venv/bin/activate
+PYTHONPATH=. pytest
 ```
+Coverage reports are generated in `backend/htmlcov/`.
+
+### Frontend
+```sh
+cd frontend
+npm run test      # Run tests
+npm run coverage  # Run tests with coverage reporting
+```
+Coverage reports are generated in `frontend/coverage/`.
+
+---
 
 ## Credits
 This project was initialized using the [testdriven](https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/)'s tutorial.
 
-##  Contact Details
-* For prompt assistance, email is the preferred method of communication.
-[ Send a mail](mailto:krigjo25@gmail.com)
+## Contact Details
+[Send a mail](mailto:krigjo25@gmail.com)
 
-Images 
 Sincerely,
 @krigjo25
