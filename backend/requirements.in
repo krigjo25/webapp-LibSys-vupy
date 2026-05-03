@@ -1,9 +1,10 @@
-
 Flask
 Flask-Session
 Flask-SQLAlchemy
 
 pytest
 Pydantic
+pydantic-settings
 python-dotenv
 simplified-logging
+pyright

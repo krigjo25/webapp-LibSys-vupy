@@ -1,55 +1,34 @@
-#   Utility tools for the application
+#   Python Libraries
+import datetime as dt
+from os import getenv
+from typing import Dict, List, Any
 
-#   Import the necessary dependencies
-import uuid as ID
-from typing import Optional
+#   Third-party Libraries
+from dotenv import load_dotenv
 
-from core_files import app, db
+#   Internal Libraries
+from core_files import db
 from lib.modal.db_init import Book
-from lib.config.log_config import UtilityWatcher
+from .database_connection import MariaDB
 
+load_dotenv()
 
-log = UtilityWatcher()
-log.FileHandler()
-
-class UtilityTools(object):
+class UtilityTools:
 
     def __init__(self):
+        #   Initialize the logger
+        pass
 
-        #   Initializing the logger
-        self.log = log
+    def Purge(self, BID: str) -> None:
 
-    def Check(self, BID: str) -> bool:
-    
-        """
-            *  Ensure that the element exists in the database
-
-            param: BID
-            return: True or False
-        """
-        book = Book.query.get(BID)
-        if book:
-            self.log.info(f"Book with ID: {BID} exists in the database.")
-            return True
-
-        self.log.warn(f"Book with ID: {BID} does not exist in the database.")
-        return False
-
-    def Purge(self, BID: str) -> str:
-        """
-            *  Delete the book from the database
-
-            param: BID
-            return: Status message
-        """
         book = Book.query.get(BID)
 
-        #   Ensure that the element exists
         if book:
-            db.session.add(book) # Just to be sure it's in the session if needed, but query.get usually attaches it
             db.session.delete(book)
             db.session.commit()
-            return "Book Deleted Successfully"
+            print(f"Purged: {BID}")
+        else:
+            print(f"Book not found: {BID}")
 
-        return "Book was not found in the database"
-    
+    def Maintenance(self) -> None:
+        pass

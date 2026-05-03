@@ -1,0 +1,21 @@
+{
+  "include": ["."],
+  "exclude": ["**/__pycache__", ".venv", "typings"],
+  "venvPath": ".",
+  "venv": ".venv",
+  "executionEnvironments": [
+    {
+      "root": "."
+    }
+  ],
+  "typeCheckingMode": "strict",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownParameterType": "none",
+  "reportUnknownArgumentType": "none",
+  "reportUntypedBaseClass": "none",
+  "reportUnknownLambdaType": "none",
+  "reportMissingParameterType": "error",
+  "reportUnusedImport": "error"
+}

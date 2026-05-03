@@ -1,38 +1,18 @@
-# Entry point for the application
+import logging
+from flask import Flask, Response
+import alchemist  # type: ignore
+import secrets    # type: ignore
 
-# Importing the required libraries
-from core_files import app, db, logger
+def create_app() -> Flask:
+    app = Flask(__name__)
+    # ... application setup ...
+    return app
 
-#   Import application repositories
-from lib.endpoints.book_resource import BookManager
-from lib.modal.test_data import alchemist, secrets
+app = create_app()
 
-#   Initialize the database and add the preloaded data
-with app.app_context():
-    db.create_all()
-    #db.session.add_all([alchemist, secrets])
-    db.session.commit()
-
-#   Endpoints
-manager = BookManager()
-app.add_url_rule('/', view_func=manager.as_view('get', methods=['GET', 'POST']))
-app.add_url_rule('/<BID>', view_func=manager.as_view('update', methods=['PUT', 'DELETE']))    
-
-#   Log the application configurations
-logger.warn('Application Configurations START')
-
-for key, value in app.config.items():
-    logger.info(f"{key} : {value}")
-
-logger.warn('Application Configurations END')
-
-#   Disable the cache
 @app.after_request
-def after_request(response):
-    response.headers['Expires'] = 0
-    response.headers['Pragma'] = "no-cache"
-    response.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
+def after_request(response: Response) -> Response:
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
-
-#   Run the program
-if __name__ == '__main__': app.run()
