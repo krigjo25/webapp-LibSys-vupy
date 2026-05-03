@@ -1,6 +1,64 @@
 <mxfile host="65bd71144e">
+    <diagram id="_yP5G4YGnuLsup7v-DDj" name="High-level diagram">
+        <mxGraphModel dx="540" dy="321" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-30" value="Frontend SPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;shadow=1;fontFamily=Helvetica;" vertex="1" parent="1">
+                    <mxGeometry x="310" y="40" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-31" value="" style="edgeStyle=none;html=1;strokeColor=#F5F5F5;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-32" target="pXdYHPlI7Drpz5j7n4zQ-30">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-32" value="Flask Runtime" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fe;strokeColor=#6c8ebf;startSize=30;shadow=1;fontFamily=Helvetica;glass=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="160" width="760" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-33" value="Flask Application Core (app.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-32">
+                    <mxGeometry x="10" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-34" value="API Resource Layer (BookManager)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-32">
+                    <mxGeometry x="270" y="60" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-35" value="Config &amp; Utils" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-32">
+                    <mxGeometry x="570" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-36" value="Persistence &amp; Storage Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;startSize=30;shadow=1;fontFamily=Helvetica;glass=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="336" width="760" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-37" value="SQLAlchemy ORM (Book Model)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-36">
+                    <mxGeometry x="10" y="60" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-38" value="SQLite Database" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-36">
+                    <mxGeometry x="330" y="50" width="100" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-39" value="Legacy SQL Assets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontFamily=Helvetica;" vertex="1" parent="pXdYHPlI7Drpz5j7n4zQ-36">
+                    <mxGeometry x="570" y="60" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-40" value="REST API Requests" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;strokeColor=#F5F5F5;fillColor=#f5f5f5;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-30" target="pXdYHPlI7Drpz5j7n4zQ-34">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-41" value="Orchestrates" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-33" target="pXdYHPlI7Drpz5j7n4zQ-34">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-42" value="CRUD Operations" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;strokeColor=#6C8EBF;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-34" target="pXdYHPlI7Drpz5j7n4zQ-37">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="390" y="320"/>
+                            <mxPoint x="130" y="320"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-43" value="Persists" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;strokeColor=#82B366;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-37" target="pXdYHPlI7Drpz5j7n4zQ-38">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pXdYHPlI7Drpz5j7n4zQ-44" value="References" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;strokeColor=#6C8EBF;" edge="1" parent="1" source="pXdYHPlI7Drpz5j7n4zQ-35" target="pXdYHPlI7Drpz5j7n4zQ-39">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
     <diagram id="book-erd-page" name="Book ER Diagram">
-        <mxGraphModel dx="1745" dy="960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1134" dy="674" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>

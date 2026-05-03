@@ -1,0 +1,112 @@
+<mxfile host="65bd71144e">
+    <diagram id="statediagram-page" name="State Diagram: Lending Decision">
+        <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+
+                <!-- Global Initial State -->
+                <mxCell id="init_outside" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="20" width="30" height="30" as="geometry"/>
+                </mxCell>
+
+                <!-- Composite State: System -->
+                <mxCell id="system_composite" value="System" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fe;strokeColor=#6c8ebf;rounded=1;shadow=1;fontFamily=Helvetica;startSize=30;glass=1;" vertex="1" parent="1">
+                    <mxGeometry x="25" y="100" width="400" height="420" as="geometry"/>
+                </mxCell>
+
+                <!-- Inner Initial State -->
+                <mxCell id="init_inside" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="system_composite">
+                    <mxGeometry x="185" y="50" width="30" height="30" as="geometry"/>
+                </mxCell>
+
+                <!-- Sub-state: system (Receive Request) -->
+                <mxCell id="state_receive" value="system: Receive Request" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;shadow=1;fontFamily=Helvetica;" vertex="1" parent="system_composite">
+                    <mxGeometry x="100" y="110" width="200" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- Sub-state: LENDINGS(table) -->
+                <mxCell id="state_check" value="LENDINGS(table)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;shadow=1;fontFamily=Helvetica;" vertex="1" parent="system_composite">
+                    <mxGeometry x="100" y="220" width="200" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- NO branch -->
+                <mxCell id="state_no" value="NO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontFamily=Helvetica;" vertex="1" parent="system_composite">
+                    <mxGeometry x="50" y="340" width="80" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- YES branch -->
+                <mxCell id="state_yes" value="YES" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontFamily=Helvetica;" vertex="1" parent="system_composite">
+                    <mxGeometry x="270" y="340" width="80" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- Transitions -->
+                <mxCell id="t1" value="Request to Lend a book" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="init_outside" target="system_composite">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="225" y="50" as="sourcePoint"/>
+                        <mxPoint x="225" y="100" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t2" value="Receive Request" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="system_composite" source="init_inside" target="state_receive">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="200" y="80" as="sourcePoint"/>
+                        <mxPoint x="200" y="110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t3" value="Check outstanding fines" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="system_composite" source="state_receive" target="state_check">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="200" y="170" as="sourcePoint"/>
+                        <mxPoint x="200" y="220" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t4" value="" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="system_composite" source="state_check" target="state_no">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="150" y="280" as="sourcePoint"/>
+                        <mxPoint x="90" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="150" y="310"/>
+                            <mxPoint x="90" y="310"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t5" value="" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="system_composite" source="state_check" target="state_yes">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="250" y="280" as="sourcePoint"/>
+                        <mxPoint x="310" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="250" y="310"/>
+                            <mxPoint x="310" y="310"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t6" value="No outstanding fines" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="system_composite" source="state_no" target="state_receive">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="50" y="360" as="sourcePoint"/>
+                        <mxPoint x="50" y="140" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="30" y="360"/>
+                            <mxPoint x="30" y="140"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+                <mxCell id="t7" value="Outstanding fines exist" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;fontFamily=Helvetica;fontSize=11;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="system_composite" source="state_yes" target="state_receive">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="350" y="360" as="sourcePoint"/>
+                        <mxPoint x="350" y="140" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="370" y="360"/>
+                            <mxPoint x="370" y="140"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
