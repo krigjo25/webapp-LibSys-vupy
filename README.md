@@ -1,9 +1,16 @@
 # Library Management System
-A web-based library management system developed using **Python (Flask)** for the backend and **Vue.js (TypeScript)** for the frontend.
+A modern, web-based library management system built with **Python (Flask)** and **Vue 3 (TypeScript)**.
 
 A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-libSys.pdf)
 
-## Tech Stack
+## 🚀 Key Features (Modernization)
+- **TypeScript Migration:** The entire frontend has been migrated to TypeScript for robust type safety and better developer experience.
+- **Comprehensive Testing:** Integrated `pytest` (backend) and `Vitest` (frontend) with automated coverage reporting.
+- **Data Validation:** Uses **Pydantic** on the backend and TypeScript interfaces on the frontend for synchronized data contracts.
+- **Integrated Styling:** SASS preprocessing is now handled directly by Vite using `sass-embedded`, removing the need for pre-compiled CSS.
+- **Architecture Visualization:** System diagrams migrated to `.drawio` for better maintainability and professional visualization.
+
+## 🛠 Tech Stack
 
 | Layer           | Technology                              | Version  |
 |-----------------|-----------------------------------------|----------|
@@ -23,34 +30,39 @@ A preview of the project can be accessed at [Screen Dump](frontend/docs/Webapp-l
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
 ```text
 webapp-LibSys-vupy/
 ├── README.md
-├── backend/            # Flask API & SQLAlchemy Models
+├── backend/
+│   ├── tests/          # Pytest suite
+│   ├── core_files/     # Flask & DB Initialization
+│   └── lib/            # Endpoints, Models (Pydantic/SQLAlchemy), and Utils
 ├── docs/               # System-level documentation & diagrams
-├── frontend/           # Vue 3 SPA (TypeScript)
-└── tests/              # Backend test suite
+└── frontend/
+    ├── src/
+    │   ├── types/      # Central TypeScript Interfaces
+    │   ├── components/ # Vue components (with __tests__)
+    │   └── assets/     # SASS source & images
+    └── package.json
 ```
 
 ---
 
-## Important Documents
+## 📖 Important Documents
 | Document | Description |
 |----------|-------------|
-| [docs/architecture.md](docs/architecture.md) | Repository-level architecture covering frontend, backend, and persistence |
-| [frontend/docs/architecture.md](frontend/docs/architecture.md) | Frontend runtime structure, folders, and data flow |
-| [backend/docs/architecture.md](backend/docs/architecture.md) | Backend runtime architecture and service breakdown |
-| [backend/docs/backend-diagrams.drawio](backend/docs/backend-diagrams.drawio) | Backend architecture and ER diagrams |
+| [docs/architecture.md](docs/architecture.md) | Repository-level architecture |
+| [frontend/docs/architecture.md](frontend/docs/architecture.md) | Frontend runtime structure & data flow |
+| [backend/docs/architecture.md](backend/docs/architecture.md) | Backend runtime architecture |
+| [backend/docs/backend-diagrams.drawio](backend/docs/backend-diagrams.drawio) | Backend & ER diagrams |
 | [frontend/docs/frontend-runtime-architecture.drawio](frontend/docs/frontend-runtime-architecture.drawio) | Frontend runtime diagram |
 | [docs/diagrams/system-overview.drawio](docs/diagrams/system-overview.drawio) | End-to-end system overview |
-| [backend/docs/diagrams/sequencediagram.md](backend/docs/diagrams/sequencediagram.md) | Sequence diagram for library interactions |
-| [backend/docs/diagrams/statediagram.md](backend/docs/diagrams/statediagram.md) | State diagram for core lending decisions |
 
 ---
 
-## Installation
+## ⚙️ Installation
 
 ### Prerequisites
 - Python 3.10+
@@ -63,11 +75,10 @@ cd webapp-LibSys-vupy
 ```
 
 ### 2. Backend Setup
-We recommend using a virtual environment.
 ```sh
 cd backend
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -79,7 +90,7 @@ npm install
 
 ---
 
-## Running the Application
+## 🏃 Running the Application
 
 ### Start Backend
 ```sh
@@ -96,7 +107,7 @@ npm run dev
 
 ---
 
-## Testing & Coverage
+## 🧪 Testing & Coverage
 
 ### Backend
 ```sh
@@ -104,22 +115,22 @@ cd backend
 source .venv/bin/activate
 PYTHONPATH=. pytest
 ```
-Coverage reports are generated in `backend/htmlcov/`.
+Coverage: Check terminal output or open `backend/htmlcov/index.html`.
 
 ### Frontend
 ```sh
 cd frontend
-npm run test      # Run tests
-npm run coverage  # Run tests with coverage reporting
+npm run test      # Standard tests
+npm run coverage  # Tests with coverage (v8)
 ```
-Coverage reports are generated in `frontend/coverage/`.
+Coverage: Open `frontend/coverage/index.html`.
 
 ---
 
-## Credits
-This project was initialized using the [testdriven](https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/)'s tutorial.
+## 📜 Credits
+Initialized from [testdriven](https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/)'s tutorial.
 
-## Contact Details
+## ✉️ Contact
 [Send a mail](mailto:krigjo25@gmail.com)
 
 Sincerely,
