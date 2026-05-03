@@ -5,9 +5,11 @@
     </button>
 </template>
 
-<script setup>
-
-    //  Importing Components
+<script setup lang="ts">
+    import type { Book, ActionButtonData } from '@/types';
     
-    const props = defineProps(['data', 'book']);
+    const props = defineProps<{
+        data: ActionButtonData,
+        book?: Book
+    }>();
 </script>

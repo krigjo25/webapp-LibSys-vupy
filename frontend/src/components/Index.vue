@@ -1,31 +1,10 @@
 <template>
   <section class="flex-wrap-row-space-evenly">
-    <BookTable :data="data"/>
+    <BookTable />
   </section>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
   //  Importing Components
   import BookTable from './Books.vue';
-
-
-  //  Importing required dependencies
-  import { reactive } from 'vue';
-
-  //  Initializing reactive objects
-  const Book = reactive
-  (
-      {
-        id    :null,
-        title :null,
-        author:null,
-      }
-  );
-
-  const data = reactive(  
-    {
-      title: null,
-      author: null,
-  });
 </script>

@@ -9,11 +9,11 @@
           {{ data.data.title }} 
           <span class="auth-tit">
             |by
-            <small v-for="author in data.data.author">{{ author }}</small>
+            <small v-for="author in [data.data.author]" :key="author">{{ author }}</small>
           </span></h2>
         <p>
           Published {{ data.data.year }} by
-            <small v-for="publisher in data.data.publisher">{{ publisher }}</small> 
+            <small v-for="publisher in [data.data.published_by]" :key="publisher">{{ publisher }}</small> 
           <span v-if="data.data.reviews">Rating: {{data.data.reviews.rating}} by {{data.data.reviews.name}}</span>
         </p>
           </section>
@@ -21,8 +21,7 @@
           <p>{{ data.data.description }}</p>
         </section>
         <section class="genre flex-row-justify-center">
-          <p v-if="data.data.genre != null && data.data.genre.length > 1" v-for="genre in data.data.genre">{{ genre }}</p>
-            <p v-else v-for="genre in data.data.genre">{{ genre }}</p>
+          <p v-for="genre in data.data.genre" :key="genre">{{ genre }}</p>
         </section>
       </section>
     </section>
@@ -31,23 +30,22 @@
     </section>
 </template>
   
-<script setup>
-
-  
+<script setup lang="ts">
   //  Importing required dependencies
-  import { storedData } from '../stores/formStore.js';
+  import { storedData } from '../stores/formStore';
   import { onMounted, onUnmounted, reactive } from 'vue';
+  import type { Book } from '@/types';
   
   //  Initializing reactive objects
-  const book = storedData();
-  const data = reactive({
+  const bookStore = storedData();
+  const data = reactive<{ data: Book | null }>({
     data: null,
   });
 
   onUnmounted(() => {
-    book.clearData(null);
+    bookStore.clearData();
   });
   onMounted(() => {
-    data.data = book.data;
+    data.data = bookStore.data;
   });
 </script>

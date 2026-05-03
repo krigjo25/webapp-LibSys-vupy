@@ -1,16 +1,20 @@
-//  JS document for Pinia Store
+//  TS document for Pinia Store
 
 // Importing necessary modules
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
+import type { Book } from '@/types';
+
+interface State {
+    data: Book | null;
+}
 
 // Defining the store
 export const storedData = defineStore('shareData', {
-    state: () => ({
-        data: reactive({}),
+    state: (): State => ({
+        data: null,
     }),
     actions: {
-        setData(data) {
+        setData(data: Book) {
             this.data = data;
         },
         clearData() {

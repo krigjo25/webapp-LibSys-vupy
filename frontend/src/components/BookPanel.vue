@@ -1,4 +1,3 @@
-#  The first Vue project
 <template>
 
   <nav class="flex-wrap-row-space-evently">
@@ -6,21 +5,22 @@
           type: 'submit',
           name: 'Create book',
           cls: 'bi bi-plus',
-          action: upsertEvent
-        }"/>
+          action: () => upsertEvent()
+        }" :book="{} as Book"/>
   </nav>
   <section class="flex-wrap-row-space-evenly">
     <Books :nav="buttons.nav" :data="buttons.data"/>
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
   //  Importing required dependencies
   import { useRouter } from 'vue-router';
   import { onMounted, reactive} from 'vue';
-  import { storedData } from '../stores/formStore.js';
-  import { removeBook, updateBook, createBook } from '../assets/js/bookCrud.js';
+  import { storedData } from '../stores/formStore';
+  import { removeBook, updateBook, createBook } from '../assets/js/bookCrud';
+  import type { Book, NavigationData } from '@/types';
   
   //  Importing components
   import Books from './Books.vue';
@@ -30,38 +30,46 @@
   const router = useRouter();
   const buffy = storedData();
 
-  const buttons = reactive(
+  interface ButtonState {
+    nav: boolean;
+    data: NavigationData;
+  }
+
+  const buttons = reactive<ButtonState>(
     { 
       nav : true,
       data:
       [
         {
-          id: 2,
           type: 'button',
           cls: 'bi bi-arrow-clockwise',
-          action:upsertEvent
+          action: upsertEvent,
+          name: 'Update'
         },
         {
-          id: 3,
           type: 'button',
           cls: 'bi bi-trash',
-          action:removeBook,
+          action: removeBook,
+          name: 'Delete'
         }
     ]});
 
   //  Router push
-  function upsertEvent(book = null)
+  function upsertEvent(book: Book | null = null)
   {
-
-    buffy.setData(book);
+    if (book) {
+        buffy.setData(book);
+    } else {
+        buffy.clearData();
+    }
     router.push({name: 'UpsertBook'});
   }
 
   //  Create or Update a book
-  async function upsertBook(data) 
-      {
-        //  Ensure the data's integerty
-        data.id ? updateBook(data) : createBook(data);
+  async function upsertBook(data: Book) 
+  {
+    //  Ensure the data's integrity
+    data.bookID ? await updateBook(data) : await createBook(data);
   };
 
 onMounted(() => {

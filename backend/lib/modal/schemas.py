@@ -51,6 +51,7 @@ class BookSchema(BaseModel):
     year: Optional[str] = None
     genre: List[str]
     description: str
+    published_by: Optional[str] = None
     path: Optional[str] = Field(alias="img_path", default=None)
     reviews: ReviewSchema = Field(default_factory=ReviewSchema)
 
@@ -77,6 +78,7 @@ class BookSchema(BaseModel):
             year=book.year,
             genre=book.genre,
             description=book.description,
+            published_by=book.published_by,
             img_path=book.img_path,
             reviews=ReviewSchema(name=book.reviewers, rating=book.rating)
         )

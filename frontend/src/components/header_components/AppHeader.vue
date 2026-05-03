@@ -4,9 +4,7 @@
     </header>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
 //  Importing Components
 import Nav from './Navigation_route.vue';
-
 </script>
