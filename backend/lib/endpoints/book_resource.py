@@ -144,24 +144,25 @@ class BookManager(MethodView):
         
         # Default messages based on status
         if message is None:
-            if status == 200:
-                message = "The operation was successful."
-            elif status == 201:
-                message = "Successfully added a new entry to the database."
-            elif status == 400:
-                message = "Bad Request. The server could not understand the request due to invalid syntax."
-            elif status == 404:
-                message = "The requested resource could not be found."
-            elif status == 405:
-                message = "Method Not Allowed."
-            elif status == 409:
-                message = "Conflict with existing resource."
-            elif status == 422:
-                message = "Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors."
-            elif status == 500:
-                message = "Internal Server Error."
-            else:
-                message = "An unknown status occurred."
+            match status:
+                case 200:
+                    message = "The operation was successful."
+                case 201:
+                    message = "Successfully added a new entry to the database."
+                case 400:
+                    message = "Bad Request. The server could not understand the request due to invalid syntax."
+                case 404:
+                    message = "The requested resource could not be found."
+                case 405:
+                    message = "Method Not Allowed."
+                case 409:
+                    message = "Conflict with existing resource."
+                case 422:
+                    message = "Unprocessable Entity. The request was well-formed but was unable to be followed due to semantic errors."
+                case 500:
+                    message = "Internal Server Error."
+                case _:
+                    message = "An unknown status occurred."
 
         response['message'] = message
         
